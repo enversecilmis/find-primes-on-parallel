@@ -2,6 +2,10 @@
 
 <p>
 In this project prime numbers in a range are found with multiple threads, using 'worker-threads' in nodejs.
+</br>
+</br>
+Each worker finds primes on a smaller range which sums up to what we want.
+</br>
 </p>
 </br>
 
