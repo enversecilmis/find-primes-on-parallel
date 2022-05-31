@@ -25,23 +25,23 @@ import { findPrimes } from "./findPrime";
 
 // ******************************   Multi Thread   *******************************
 
-const [ lowerBound, upperBound ] = [ 0, 1000000 ]
-const threadCount = cpus().length*2 // idk
+const [ LOWER_BOUND, UPPER_BOUND ] = [ 0, 1000000 ]
+const THREAD_COUNT = cpus().length*2 // idk
 
-const calcRange = upperBound - lowerBound
-const rangePerThread = Math.floor(calcRange / threadCount)
-const leftover = calcRange % threadCount
+const CALC_RANGE = UPPER_BOUND - LOWER_BOUND
+const RANGE_PER_THREAD = Math.floor(CALC_RANGE / THREAD_COUNT)
+const LEFTOVER_SIZE = CALC_RANGE % THREAD_COUNT
 
 
 
-const workerFoundPrimes: number[][] = new Array(threadCount)
+const workerFoundPrimes: number[][] = new Array(THREAD_COUNT)
 const workers: Worker[] = []
-let WORKING_WORKER_COUNT = threadCount
+let working_worker_count = THREAD_COUNT
 
 
 
 // Create workers
-for (let i=0; i<threadCount; i++){
+for (let i=0; i<THREAD_COUNT; i++){
 
     const worker = new Worker('./dist/findPrimeWorker.js')
 
@@ -52,7 +52,7 @@ for (let i=0; i<threadCount; i++){
         worker.terminate().then( val => {
             console.log(`${i}. Terminated ${val}`)
         })
-        WORKING_WORKER_COUNT--
+        working_worker_count--
     })
 
     workers.push(worker)
@@ -61,26 +61,27 @@ for (let i=0; i<threadCount; i++){
 
 const DATE_BEFORE = Date.now()
 // Give ranges to workers to work with
-for (let i=0; i<threadCount-1; i++){
+for (let i=0; i<THREAD_COUNT-1; i++){
 
-    let lower = lowerBound + rangePerThread*i
-    let upper = lower + rangePerThread
+    let lower = LOWER_BOUND + RANGE_PER_THREAD*i
+    let upper = lower + RANGE_PER_THREAD
     
     workers[i].postMessage([lower, upper])
 }
 
-// Give leftover to last worker in addition to its range
-let lower = lowerBound + rangePerThread*(threadCount-1)
-let upper = lower + rangePerThread + leftover
-workers[threadCount-1].postMessage([lower,upper])
+// Give leftovers to last worker in addition to its range
+let lower = LOWER_BOUND + RANGE_PER_THREAD*(THREAD_COUNT-1)
+let upper = lower + RANGE_PER_THREAD + LEFTOVER_SIZE   
+workers[THREAD_COUNT-1].postMessage([lower,upper])
 
 
 
 
 
 
+// Didn't know how else to wait for all workers to finish
 const interval1 = setInterval(() => {
-    if(WORKING_WORKER_COUNT === 0){
+    if(working_worker_count === 0){
         console.log(workerFoundPrimes);
         console.log(`Run Time:  ${(Date.now() - DATE_BEFORE)/1000} seconds`);
         

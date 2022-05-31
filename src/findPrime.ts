@@ -1,10 +1,10 @@
 
 
 
-const findPrimes = (min: number, max: number): number[] => {
+const findPrimes = (lower_bound: number, upper_bound: number): number[] => {
     const primes: number[] = []
 
-    for (let i=min; i<max; i++)
+    for (let i=lower_bound; i<upper_bound; i++)
         if(isPrime(i)) primes.push(i)
     
     return primes
