@@ -1,5 +1,5 @@
 import { parentPort,  } from "worker_threads";
-import { findPrimes } from "./findPrime";
+import { findPrimes } from "./utils";
 
 
 

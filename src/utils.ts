@@ -1,3 +1,7 @@
+const reduce2DArrayTo1D = <T>(array: T[][]) => (
+    array.reduce((prev,current): T[] => prev.concat(current))
+)
+
 
 
 
@@ -9,6 +13,7 @@ const findPrimes = (lower_bound: number, upper_bound: number): number[] => {
     
     return primes
 }
+
 
 
 
@@ -24,7 +29,11 @@ const isPrime = (x: number) => {
 
 
 
+
+
+
 export {
-    findPrimes,
     isPrime,
+    findPrimes,
+    reduce2DArrayTo1D,
 }
