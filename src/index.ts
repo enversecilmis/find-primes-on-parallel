@@ -8,27 +8,6 @@ import { findPrimes, reduce2DArrayTo1D } from "./utils";
 
 
 
-
-
-
-// ******************************   Single Thread   *******************************
-
-// const DATE_BEFORE = Date.now()
-// const primes = findPrimes(0,1000000)
-// console.log(primes)
-// console.log(`Run Time:  ${(Date.now() - DATE_BEFORE)/1000} seconds`);
-
-
-
-
-
-
-
-
-
-
-// ******************************   Multi Thread   *******************************
-
 const LOWER_BOUND             =  0
 const UPPER_BOUND             =  16
 const THREAD_COUNT            =  cpus().length*2 // Arbitrary (I guess?)
@@ -95,5 +74,21 @@ const interval = setInterval(() => {
 
     }
 },300)
+
+
+
+
+
+
+
+
+
+
+// ******************************   Single Thread   *******************************
+
+// const DATE_BEFORE = Date.now()
+// const primes = findPrimes(0,1000000)
+// console.log(primes)
+// console.log(`Run Time:  ${(Date.now() - DATE_BEFORE)/1000} seconds`);
 
 
