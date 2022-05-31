@@ -30,7 +30,7 @@ import { findPrimes, reduce2DArrayTo1D } from "./utils";
 // ******************************   Multi Thread   *******************************
 
 const LOWER_BOUND             =  0
-const UPPER_BOUND             =  1000000
+const UPPER_BOUND             =  16
 const THREAD_COUNT            =  cpus().length*2 // Arbitrary (I guess?)
 const RANGE_LENGTH            =  UPPER_BOUND - LOWER_BOUND
 const RANGE_LENGTH_PER_THREAD =  Math.floor(RANGE_LENGTH / THREAD_COUNT)
@@ -53,7 +53,7 @@ for (let i=0; i<THREAD_COUNT; i++){
     worker.on('message', (primes: number[]) => {
         workerFoundPrimes[i] = primes
 
-        console.log(`${i}.  ${worker.threadId}: Returned`);
+        console.log(`${i}. worker ${worker.threadId}: Returned`);
         worker.terminate()
         workingWorkerCount--
     })
@@ -65,7 +65,7 @@ for (let i=0; i<THREAD_COUNT; i++){
 
 
 const DATE_BEFORE = Date.now()
-// Give ranges to workers to work with, except last worker.
+// Give equal ranges to workers to work with, except last worker.
 for (let i=0; i<THREAD_COUNT-1; i++){
 
     let lower = LOWER_BOUND + RANGE_LENGTH_PER_THREAD*i
@@ -83,7 +83,6 @@ workers[THREAD_COUNT-1].postMessage([lower,upper])
 
 
 
-
 // Didn't know how else to wait for all workers to finish.
 const interval = setInterval(() => {
     if(workingWorkerCount === 0){
@@ -96,4 +95,5 @@ const interval = setInterval(() => {
 
     }
 },300)
+
 
