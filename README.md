@@ -20,9 +20,13 @@ npm run compile
 npm start
 ```
 
-""This will print calculated primes""
+<i>This will print calculated primes</i>
 
 
 </br>
 
 ### In index.ts file
+`LOWER_BOUND` and `UPPER_BOUND` determines the range.
+
+`THREAD_COUNT` determines how many threads will be used.
+
