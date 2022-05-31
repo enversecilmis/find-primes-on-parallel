@@ -1,4 +1,4 @@
-const reduce2DArrayTo1D = <T>(array: T[][]) => (
+const reduce2DArrayTo1D = <T>(array: T[][]): T[] => (
     array.reduce((prev,current): T[] => prev.concat(current))
 )
 
@@ -17,7 +17,7 @@ const findPrimes = (lower_bound: number, upper_bound: number): number[] => {
 
 
 
-const isPrime = (x: number) => {
+const isPrime = (x: number): boolean => {
     if(x%2 === 0 || x === 1)
         return false
 
