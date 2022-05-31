@@ -9,17 +9,18 @@ import { findPrimes, reduce2DArrayTo1D } from "./utils";
 
 
 const LOWER_BOUND             =  0
-const UPPER_BOUND             =  16
+const UPPER_BOUND             =  1000000
 const THREAD_COUNT            =  cpus().length*2 // Arbitrary (I guess?)
 const RANGE_LENGTH            =  UPPER_BOUND - LOWER_BOUND
 const RANGE_LENGTH_PER_THREAD =  Math.floor(RANGE_LENGTH / THREAD_COUNT)
 const LEFTOVER_SIZE           =  RANGE_LENGTH % THREAD_COUNT
+const DATE_BEFORE = Date.now()
 
 
 // Every worker puts its data to its corresponding index so we don't have to deal with sorting later.
 const workerFoundPrimes: number[][] = new Array(THREAD_COUNT)
 const workers: Worker[] = []
-let workingWorkerCount = THREAD_COUNT
+let workingWorkersCount = THREAD_COUNT
 
 
 
@@ -34,7 +35,7 @@ for (let i=0; i<THREAD_COUNT; i++){
 
         console.log(`${i}. worker ${worker.threadId}: Returned`);
         worker.terminate()
-        workingWorkerCount--
+        workingWorkersCount--
     })
     workers.push(worker)
 }
@@ -43,7 +44,6 @@ for (let i=0; i<THREAD_COUNT; i++){
 
 
 
-const DATE_BEFORE = Date.now()
 // Give equal ranges to workers to work with, except last worker.
 for (let i=0; i<THREAD_COUNT-1; i++){
 
@@ -62,16 +62,15 @@ workers[THREAD_COUNT-1].postMessage([lower,upper])
 
 
 
-// Didn't know how else to wait for all workers to finish.
+// Don't know how else to wait for all workers to finish.
 const interval = setInterval(() => {
-    if(workingWorkerCount === 0){
-
+    if(workingWorkersCount === 0){
+        
         const primes = reduce2DArrayTo1D(workerFoundPrimes)
         console.log(primes)
-        
         console.log(`Run Time:  ${(Date.now() - DATE_BEFORE)/1000} seconds`);
+        
         clearInterval(interval)
-
     }
 },300)
 
