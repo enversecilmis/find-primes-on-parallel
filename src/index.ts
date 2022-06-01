@@ -1,6 +1,6 @@
 import { cpus } from "os";
 import { Worker } from "worker_threads";
-import { findPrimes, reduce2DArrayTo1D } from "./utils";
+import { findPrimes, reduce2DArrayTo1D, sieveOfEratosthenes } from "./utils";
 
 
 
@@ -14,7 +14,7 @@ const THREAD_COUNT            =  cpus().length*2 // Arbitrary (I guess?)
 const RANGE_LENGTH            =  UPPER_BOUND - LOWER_BOUND
 const RANGE_LENGTH_PER_THREAD =  Math.floor(RANGE_LENGTH / THREAD_COUNT)
 const LEFTOVER_SIZE           =  RANGE_LENGTH % THREAD_COUNT
-const DATE_BEFORE = Date.now()
+const DATE_BEFORE             =  Date.now()
 
 
 // Every worker puts its data to its corresponding index so we don't have to deal with sorting later.
@@ -65,7 +65,7 @@ workers[THREAD_COUNT-1].postMessage([lower,upper])
 // Don't know how else to wait for all workers to finish.
 const interval = setInterval(() => {
     if(workingWorkersCount === 0){
-        
+
         const primes = reduce2DArrayTo1D(workerFoundPrimes)
         console.log(primes)
         console.log(`Run Time:  ${(Date.now() - DATE_BEFORE)/1000} seconds`);
@@ -86,7 +86,7 @@ const interval = setInterval(() => {
 // ******************************   Single Thread   *******************************
 
 // const DATE_BEFORE = Date.now()
-// const primes = findPrimes(0,1000000)
+// const primes = sieveOfEratosthenes(10000000)
 // console.log(primes)
 // console.log(`Run Time:  ${(Date.now() - DATE_BEFORE)/1000} seconds`);
 
